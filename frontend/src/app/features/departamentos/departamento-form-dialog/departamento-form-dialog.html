@@ -1,0 +1,43 @@
+<h2 mat-dialog-title class="text-[19px] font-medium text-ink-primary">{{ titulo }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <div class="flex flex-col gap-5">
+      <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" placeholder="Nombre departamento" />
+        @if (form.controls.nombre.hasError('required')) {
+          <mat-error>Este campo es obligatorio.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
+        <mat-label>Ubicación</mat-label>
+        <input matInput formControlName="ubicacion" placeholder="Ej: Viña del mar" />
+      </mat-form-field>
+
+      @if (errorMensaje()) {
+        <div class="rounded-lg bg-danger-bg px-4 py-2.5 text-[13px] text-danger">
+          {{ errorMensaje() }}
+        </div>
+      }
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="gap-3 px-6 pb-6">
+    <button
+      type="button"
+      class="cursor-pointer rounded-full border-0 bg-transparent px-[18px] py-2.5 text-sm font-medium text-ink-secondary hover:bg-surface-hover"
+      (click)="onCancelar()"
+    >
+      Cancelar
+    </button>
+    <button
+      type="submit"
+      class="cursor-pointer rounded-full border-0 bg-accent px-5 py-2.5 text-sm font-medium text-white hover:brightness-110 disabled:cursor-default disabled:opacity-70"
+      [disabled]="enviando()"
+    >
+      {{ enviando() ? 'Guardando…' : 'Guardar' }}
+    </button>
+  </mat-dialog-actions>
+</form>

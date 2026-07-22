@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker compose logs *)",
+      "Bash(docker info *)",
+      "Bash(docker compose ps *)",
+      "Bash(npm view *)",
+      "Bash(npx ng test *)",
+      "Bash(docker volume ls)"
+    ]
+  }
+}

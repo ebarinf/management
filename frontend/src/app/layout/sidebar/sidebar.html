@@ -1,0 +1,48 @@
+<nav class="flex min-h-screen w-[248px] shrink-0 flex-col border-r border-line bg-white px-3 py-5">
+  <div class="mb-6 flex items-center gap-2.5 pb-6 pl-3 pt-2">
+    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-accent">
+      <span class="material-symbols-outlined text-[20px] text-white">badge</span>
+    </div>
+    <div class="text-[15px] font-medium leading-tight text-ink-primary">Gestión de Personal</div>
+  </div>
+
+  <a
+    class="mb-0.5 flex items-center gap-3.5 rounded-full px-3.5 py-[11px] font-normal text-ink-primary no-underline hover:bg-surface-hover"
+    routerLink="/dashboard"
+    routerLinkActive="!text-accent !bg-accent-bg"
+    #rlaDashboard="routerLinkActive"
+  >
+    <span class="material-symbols-outlined text-[20px]">space_dashboard</span>
+    <span class="text-sm" [class.font-medium]="rlaDashboard.isActive">Dashboard</span>
+  </a>
+  <a
+    class="mb-0.5 flex items-center gap-3.5 rounded-full px-3.5 py-[11px] font-normal text-ink-primary no-underline hover:bg-surface-hover"
+    routerLink="/empleados"
+    routerLinkActive="!text-accent !bg-accent-bg"
+    #rlaEmpleados="routerLinkActive"
+  >
+    <span class="material-symbols-outlined text-[20px]">group</span>
+    <span class="text-sm" [class.font-medium]="rlaEmpleados.isActive">Empleados</span>
+  </a>
+  <a
+    class="mb-0.5 flex items-center gap-3.5 rounded-full px-3.5 py-[11px] font-normal text-ink-primary no-underline hover:bg-surface-hover"
+    routerLink="/departamentos"
+    routerLinkActive="!text-accent !bg-accent-bg"
+    #rlaDepartamentos="routerLinkActive"
+  >
+    <span class="material-symbols-outlined text-[20px]">apartment</span>
+    <span class="text-sm" [class.font-medium]="rlaDepartamentos.isActive">Departamentos</span>
+  </a>
+  <a
+    class="mb-0.5 flex items-center gap-3.5 rounded-full px-3.5 py-[11px] font-normal text-ink-primary no-underline hover:bg-surface-hover"
+    routerLink="/certificaciones"
+    routerLinkActive="!text-accent !bg-accent-bg"
+    #rlaCertificaciones="routerLinkActive"
+  >
+    <span class="material-symbols-outlined text-[20px]">workspace_premium</span>
+    <span class="text-sm" [class.font-medium]="rlaCertificaciones.isActive">Certificaciones</span>
+  </a>
+
+  <div class="flex-1"></div>
+  <div class="border-t border-line pl-3.5 pt-3.5 text-[11px] text-ink-muted">v1.0 · Ambiente interno</div>
+</nav>

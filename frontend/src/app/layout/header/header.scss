@@ -1,0 +1,6 @@
+// Tailwind no puede dirigirse al elemento host del componente sin usar
+// metadata de Angular; el resto ya está resuelto con utilidades en
+// header.html.
+:host {
+  display: block;
+}

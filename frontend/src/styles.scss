@@ -1,0 +1,90 @@
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Único fragmento del preflight de Tailwind que reincorporamos: box-sizing
+// consistente para nuestras utilidades de layout, sin el resto del reset
+// (que pisa la tipografía/botones propios de Angular Material).
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+
+  // --- Overrides M3 compartidos por toda la app (mock de Claude Design) ---
+  // Se sobreescriben las custom properties (design tokens) que Angular
+  // Material 3 expone para cada componente, en vez de forzar CSS contra su
+  // propio HTML/clases internas. Esta es la forma soportada: sigue
+  // funcionando aunque cambie el markup interno de Material en una futura
+  // actualización, cosa que sí nos rompió antes con overrides directos a
+  // clases como .mat-mdc-form-field-infix o .mat-mdc-cell (ver historial).
+
+  // 2) Borde de mat-form-field appearance="outline": de un gris medio/casi
+  // negro (var(--mat-sys-outline) por defecto) a un gris claro. Se pisa el
+  // token específico del form-field, no el token de sistema
+  // --mat-sys-outline, para no afectar otros componentes Material que
+  // también lo consumen (chips, dividers, etc.).
+  --mat-form-field-outlined-outline-color: oklch(0.85 0.005 250);
+
+  // 3) Densidad de fila en mat-table: la altura la controla este token
+  // directamente (el padding de celda es fijo en "0 16px" internamente en
+  // Material, no aporta a la altura), así que no hace falta tocar padding.
+  --mat-table-header-container-height: 44px;
+  --mat-table-row-item-container-height: 44px;
+}
+
+body {
+  // Default the application to a light color theme. This can be changed to
+  // `dark` to enable the dark color theme, or to `light dark` to defer to the
+  // user's system settings.
+  color-scheme: light;
+
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+  height: 100%;
+}
+/* You can add global styles to this file, and also import other style files */
+
+// Campos de filtro compactos (buscador, selects de "estado", etc.) usados en
+// las toolbars de listados (empleados, departamentos, certificaciones).
+// Angular Material 3 dimensiona el mat-form-field a través de estas custom
+// properties, así que basta con sobreescribir su valor — no hace falta pelear
+// con la especificidad del CSS interno de Material (::ng-deep con selectores
+// de clase simple no le gana a las reglas propias de Material).
+.filter-field {
+  --mat-form-field-container-height: 36px;
+  --mat-form-field-container-vertical-padding: 7px;
+
+  // appearance="outline" no rellena fondo por defecto (a diferencia de
+  // "fill"); acá sí queremos un fondo blanco sólido.
+  .mat-mdc-text-field-wrapper {
+    background-color: #fff;
+  }
+}

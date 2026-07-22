@@ -1,0 +1,21 @@
+<header class="flex h-16 shrink-0 items-center justify-between border-b border-line bg-white px-7">
+  <div class="text-[19px] font-medium text-ink-primary">{{ pageTitleService.title() }}</div>
+  <div class="flex items-center gap-4">
+    <div class="flex items-center gap-2.5">
+      <div class="flex h-8 w-8 items-center justify-center rounded-full bg-[oklch(0.9_0.02_258)] text-[13px] font-medium text-accent">
+        {{ iniciales() }}
+      </div>
+      <div>
+        <div class="text-[13px] font-medium capitalize leading-tight text-ink-primary">{{ usuario?.username }}</div>
+        <div class="text-[11px] capitalize leading-tight text-ink-muted">{{ usuario?.rol }}</div>
+      </div>
+    </div>
+    <a
+      class="flex cursor-pointer items-center gap-1.5 rounded-full px-3.5 py-[7px] text-[13px] font-medium text-ink-soft no-underline hover:bg-surface-hover"
+      (click)="onLogout()"
+    >
+      <span class="material-symbols-outlined text-[18px]">logout</span>
+      Cerrar sesión
+    </a>
+  </div>
+</header>

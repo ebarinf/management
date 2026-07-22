@@ -1,0 +1,7 @@
+// Tailwind no puede dirigirse al elemento host del componente sin usar
+// metadata de Angular. El resto (campos, botones) ya está resuelto con
+// utilidades en empleado-form-dialog.html; la superficie del diálogo
+// (fondo, sombra, bordes redondeados) es de Angular Material.
+:host {
+  display: block;
+}

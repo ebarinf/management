@@ -1,0 +1,60 @@
+@if (errorEmpleados()) {
+  <div class="mb-4 rounded-lg bg-danger-bg px-4 py-2.5 text-[13px] text-danger">{{ errorEmpleados() }}</div>
+}
+
+<div class="grid grid-cols-3 gap-5">
+  <div class="flex flex-col gap-2.5 rounded-xl border border-line bg-white px-6 py-[22px] shadow-[0_1px_2px_rgba(0,0,0,0.06)]">
+    <div class="flex items-center justify-between">
+      <div class="text-[13px] font-medium text-ink-secondary">Empleados activos</div>
+      <div class="flex h-9 w-9 items-center justify-center rounded-[10px] bg-accent-bg">
+        <span class="material-symbols-outlined text-[19px] text-accent">group</span>
+      </div>
+    </div>
+    <div class="text-[34px] font-medium text-ink-primary">
+      {{ cargandoEmpleados() ? '—' : empleadosActivos() }}
+    </div>
+    <div class="text-xs text-ink-muted">{{ cargandoEmpleados() ? 'Cargando…' : empleadosTotal() + ' en total' }}</div>
+    <a class="mt-1 flex items-center gap-1.5 text-[13px] font-medium text-accent no-underline hover:text-accent-hover" routerLink="/empleados">
+      Ver empleados
+      <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+    </a>
+  </div>
+
+  <div class="flex flex-col gap-2.5 rounded-xl border border-line bg-white px-6 py-[22px] shadow-[0_1px_2px_rgba(0,0,0,0.06)]">
+    <div class="flex items-center justify-between">
+      <div class="text-[13px] font-medium text-ink-secondary">Certificaciones próximas a vencer</div>
+      <div class="flex h-9 w-9 items-center justify-center rounded-[10px] bg-warning-bg">
+        <span class="material-symbols-outlined text-[19px] text-warning-text">schedule</span>
+      </div>
+    </div>
+    <div class="text-[34px] font-medium text-ink-primary">{{ certificacionesPorVencer }}</div>
+    <div class="text-xs text-warning-text">En los próximos 30 días</div>
+    <a class="mt-1 flex items-center gap-1.5 text-[13px] font-medium text-accent no-underline hover:text-accent-hover" routerLink="/certificaciones">
+      Ver certificaciones
+      <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+    </a>
+  </div>
+
+  <div class="flex flex-col gap-2.5 rounded-xl border border-line bg-white px-6 py-[22px] shadow-[0_1px_2px_rgba(0,0,0,0.06)]">
+    <div class="flex items-center justify-between">
+      <div class="text-[13px] font-medium text-ink-secondary">Certificaciones vencidas</div>
+      <div class="flex h-9 w-9 items-center justify-center rounded-[10px] bg-danger-strong-bg">
+        <span class="material-symbols-outlined text-[19px] text-danger-strong">error</span>
+      </div>
+    </div>
+    <div class="text-[34px] font-medium text-ink-primary">{{ certificacionesVencidas }}</div>
+    <div class="text-xs text-danger-strong">Requieren renovación</div>
+    <a class="mt-1 flex items-center gap-1.5 text-[13px] font-medium text-accent no-underline hover:text-accent-hover" routerLink="/certificaciones">
+      Ver certificaciones
+      <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+    </a>
+  </div>
+</div>
+
+<div class="mt-6 rounded-xl border border-line bg-white px-7 py-6">
+  <div class="mb-1 text-[15px] font-medium text-ink-primary">Bienvenida{{ usuario?.username ? ', ' + usuario?.username : '' }}</div>
+  <div class="text-[13px] leading-[1.6] text-ink-secondary">
+    Usa el menú lateral para gestionar empleados, departamentos y certificaciones. Este panel resume el estado general del
+    personal activo.
+  </div>
+</div>
