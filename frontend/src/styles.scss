@@ -51,6 +51,21 @@ html {
   // Material, no aporta a la altura), así que no hace falta tocar padding.
   --mat-table-header-container-height: 44px;
   --mat-table-row-item-container-height: 44px;
+
+  // 4) Color del divisor de filas de mat-table: por defecto toma
+  // --mat-sys-outline (un gris bastante oscuro), que contra la paleta clara
+  // de la app se ve casi negro. Se pisa el token específico de la tabla
+  // para que coincida con border-line en vez de forzar la clase
+  // .mat-mdc-cell (Material aplica el color vía esta custom property, no
+  // gana el border-bottom seteado por clase).
+  --mat-table-row-item-outline-color: oklch(0.94 0.003 250);
+
+  // 5) Fondo de mat-table: por defecto toma --mat-sys-surface (blanco),
+  // pisando el bg-transparent que se puso en el <table> (empate de
+  // especificidad entre .mat-mdc-table y .bg-transparent, gana Material).
+  // Se deja transparente para que se vea el bg-white del contenedor que
+  // envuelve la tabla en cada listado.
+  --mat-table-background-color: transparent;
 }
 
 body {
@@ -79,12 +94,73 @@ body {
 // con la especificidad del CSS interno de Material (::ng-deep con selectores
 // de clase simple no le gana a las reglas propias de Material).
 .filter-field {
-  --mat-form-field-container-height: 36px;
-  --mat-form-field-container-vertical-padding: 7px;
+  --mat-form-field-container-height: 37px;
+  --mat-form-field-container-vertical-padding: 8px;
+
+  // El borde propio de Material (notched-outline) se apaga acá — el borde
+  // visible lo dibuja el wrapper con su propia regla de abajo, como un
+  // border CSS normal, en vez de pelear con la especificidad del outline
+  // de Material.
+  --mat-form-field-outlined-outline-width: 0;
+  --mat-form-field-outlined-focus-outline-width: 0;
 
   // appearance="outline" no rellena fondo por defecto (a diferencia de
-  // "fill"); acá sí queremos un fondo blanco sólido.
+  // "fill"); acá sí queremos un fondo blanco sólido, más el borde propio.
   .mat-mdc-text-field-wrapper {
     background-color: #fff;
+    border: 1px solid #d6d9e0;
+    border-radius: 4px;
   }
+
+  input.mat-mdc-input-element,
+  .mat-mdc-select-trigger {
+    border: none;
+    outline: none;
+  }
+}
+
+// Padding horizontal y tipografía específicos del buscador y del select de
+// filtro — comparten la forma/borde de .filter-field de arriba, pero
+// difieren en padding y color de texto según el spec de diseño.
+.filter-field-search {
+  .mat-mdc-form-field-flex {
+    padding: 0 12px;
+  }
+
+  input.mat-mdc-input-element {
+    font-family: Roboto, sans-serif;
+    font-size: 13px;
+    color: #2e3138;
+  }
+}
+
+.filter-field-select {
+  .mat-mdc-form-field-flex {
+    padding: 0 10px;
+  }
+
+  .mat-mdc-select-value-text,
+  .mat-mdc-select-placeholder {
+    font-family: Roboto, sans-serif;
+    font-size: 13px;
+    color: #5c6068;
+  }
+}
+
+// Badge de estado reutilizable (Empleados hoy, Certificaciones más
+// adelante con vigente/vencida). Estandariza tamaño y forma; el color
+// se sigue aplicando aparte con clases condicionales según el dominio
+// ([class.bg-success-bg], [class.bg-line], etc.) porque los estados
+// posibles cambian de un módulo a otro.
+.badge-estado {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 72px;
+  padding: 3px 9px;
+  border-radius: 14px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
 }

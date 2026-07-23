@@ -3,6 +3,7 @@ import { Login } from './features/login/login';
 import { Dashboard } from './features/dashboard/dashboard';
 import { Listado } from './features/empleados/listado/listado';
 import { DepartamentosListado } from './features/departamentos/listado/listado';
+import { CertificacionesListado } from './features/certificaciones/listado/listado';
 import { Shell } from './layout/shell/shell';
 
 export const routes: Routes = [
@@ -18,6 +19,11 @@ export const routes: Routes = [
       { path: 'dashboard', component: Dashboard, data: { title: 'Dashboard' } },
       { path: 'empleados', component: Listado, data: { title: 'Empleados' } },
       { path: 'departamentos', component: DepartamentosListado, data: { title: 'Departamentos' } },
+      {
+        path: 'certificaciones',
+        component: CertificacionesListado,
+        data: { title: 'Certificaciones' },
+      },
     ],
   },
 ];

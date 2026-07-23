@@ -1,0 +1,92 @@
+<h2 mat-dialog-title class="text-[19px] font-medium text-ink-primary">{{ titulo }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <div class="flex flex-col gap-5">
+      <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
+        <mat-label>Empleado</mat-label>
+        <mat-select formControlName="empleadoId">
+          @for (empleado of empleados(); track empleado.id) {
+            <mat-option [value]="empleado.id">{{ empleado.nombres }} {{ empleado.apellidos }}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.empleadoId.hasError('required')) {
+          <mat-error>Este campo es obligatorio.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
+        <mat-label>Departamento</mat-label>
+        <mat-select formControlName="departamentoId">
+          @for (departamento of departamentos(); track departamento.id) {
+            <mat-option [value]="departamento.id">{{ departamento.nombre }}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.departamentoId.hasError('required')) {
+          <mat-error>Este campo es obligatorio.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
+        <mat-label>Tipo</mat-label>
+        <input matInput formControlName="tipo" placeholder="Ej: Patrón de Lancha" />
+        @if (form.controls.tipo.hasError('required')) {
+          <mat-error>Este campo es obligatorio.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
+        <mat-label>Número</mat-label>
+        <input matInput formControlName="numero" placeholder="Ej: PL-9981" />
+      </mat-form-field>
+
+      <div class="grid grid-cols-2 gap-4">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Emisión</mat-label>
+          <input matInput [matDatepicker]="pickerEmision" formControlName="fechaEmision" />
+          <mat-datepicker-toggle matIconSuffix [for]="pickerEmision"></mat-datepicker-toggle>
+          <mat-datepicker #pickerEmision></mat-datepicker>
+          @if (form.controls.fechaEmision.hasError('required')) {
+            <mat-error>Este campo es obligatorio.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Vencimiento</mat-label>
+          <input matInput [matDatepicker]="pickerVencimiento" formControlName="fechaVencimiento" />
+          <mat-datepicker-toggle matIconSuffix [for]="pickerVencimiento"></mat-datepicker-toggle>
+          <mat-datepicker #pickerVencimiento></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="estado">
+          <mat-option value="vigente">Vigente</mat-option>
+          <mat-option value="vencida">Vencida</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      @if (errorMensaje()) {
+        <div class="rounded-lg bg-danger-bg px-4 py-2.5 text-[13px] text-danger">{{ errorMensaje() }}</div>
+      }
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="gap-3 px-6 pb-6">
+    <button
+      type="button"
+      class="cursor-pointer rounded-full border-0 bg-transparent px-[18px] py-2.5 text-sm font-medium text-ink-secondary hover:bg-surface-hover"
+      (click)="onCancelar()"
+    >
+      Cancelar
+    </button>
+    <button
+      type="submit"
+      class="cursor-pointer rounded-full border-0 bg-accent px-5 py-2.5 text-sm font-medium text-white hover:brightness-110 disabled:cursor-default disabled:opacity-70"
+      [disabled]="enviando()"
+    >
+      {{ enviando() ? 'Guardando…' : 'Guardar' }}
+    </button>
+  </mat-dialog-actions>
+</form>

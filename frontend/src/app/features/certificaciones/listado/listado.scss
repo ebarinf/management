@@ -1,13 +1,7 @@
-// Tailwind no puede dirigirse al elemento host del componente sin usar
-// metadata de Angular. El resto del layout (sidebar, topbar, toolbar,
-// tabla, paginación) ya está resuelto con utilidades en listado.html.
 :host {
   display: block;
 }
 
-// Configuración interna de mat-table / mat-form-field: esto no es layout de
-// la vista, es la apariencia propia de los componentes de Material, así que
-// se mantiene fuera de Tailwind.
 ::ng-deep {
   // Material usa table-layout: auto por defecto, que reparte el ancho
   // sobrante entre columnas según su contenido, no en partes iguales. Con
@@ -18,11 +12,6 @@
     table-layout: fixed;
   }
 
-  // El padding horizontal de celda ("0 16px") lo fija Material internamente
-  // vía .mdc-data-table__cell con la misma especificidad que un override
-  // acá — no se puede pisar así, y la altura de fila no depende de él (ver
-  // --mat-table-row-item-container-height en styles.scss). Solo se
-  // sobreescribe lo que sí toma efecto: tipografía/color/borde.
   .mat-mdc-header-cell {
     text-align: left;
     font-size: 11px;
@@ -46,17 +35,12 @@
     border-bottom: 1px solid oklch(0.94 0.003 250);
   }
 
-  .mat-mdc-row {
-    cursor: pointer;
-
-    &:hover {
-      background: oklch(0.97 0.005 250);
-    }
+  // Sin cursor: pointer acá — a diferencia de Empleados/Departamentos, esta
+  // fila no tiene routerLink a ninguna vista de detalle.
+  .mat-mdc-row:hover {
+    background: oklch(0.97 0.005 250);
   }
 
-  // El tamaño compacto de estos campos se controla con la clase global
-  // .filter-field (ver styles.scss) vía custom properties de Material,
-  // no con overrides de clase acá.
   .mdc-notched-outline__notch {
     border-right: none;
   }

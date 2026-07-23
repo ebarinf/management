@@ -7,7 +7,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import {
   catchError,
@@ -31,6 +33,7 @@ import { DepartamentoFormDialog } from '../departamento-form-dialog/departamento
     MatInputModule,
     MatSelectModule,
     MatIconModule,
+    MatButtonModule,
   ],
   templateUrl: './listado.html',
   styleUrl: './listado.scss',
@@ -41,7 +44,7 @@ export class DepartamentosListado {
   private readonly pageTitleService = inject(PageTitleService);
   private readonly dialog = inject(MatDialog);
 
-  protected readonly columnas = ['nombre', 'ubicacion', 'arrow'];
+  protected readonly columnas = ['nombre', 'ubicacion', 'acciones'];
   protected readonly departamentos = signal<Departamento[]>([]);
   protected readonly cargando = signal(true);
   protected readonly errorMensaje = signal<string | null>(null);
@@ -99,6 +102,33 @@ export class DepartamentosListado {
       if (resultado) {
         this.recargar();
       }
+    });
+  }
+
+  protected onEditarDepartamento(departamento: Departamento): void {
+    const dialogRef = this.dialog.open(DepartamentoFormDialog, {
+      width: '480px',
+      data: { departamento },
+    });
+
+    dialogRef.afterClosed().subscribe((resultado) => {
+      if (resultado) {
+        this.recargar();
+      }
+    });
+  }
+
+  protected onEliminarDepartamento(departamento: Departamento): void {
+    const confirmado = confirm(`¿Eliminar el departamento "${departamento.nombre}"?`);
+    if (!confirmado) {
+      return;
+    }
+
+    this.departamentoService.remove(departamento.id).subscribe({
+      next: () => this.recargar(),
+      error: (error: HttpErrorResponse) => {
+        this.errorMensaje.set(error.error?.message ?? 'No se pudo eliminar el departamento.');
+      },
     });
   }
 }

@@ -2,14 +2,18 @@
   <form class="flex min-w-0 flex-1 flex-wrap items-center gap-3" [formGroup]="filtroForm">
     <mat-form-field
       appearance="outline"
-      class="filter-field min-w-[160px] max-w-[320px] flex-[1_1_220px]"
+      class="filter-field filter-field-search min-w-[160px] max-w-[320px] flex-[1_1_220px]"
       subscriptSizing="dynamic"
     >
       <mat-icon matPrefix fontSet="material-symbols-outlined">search</mat-icon>
       <input matInput placeholder="Buscar RUT, nombre" formControlName="busqueda" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="filter-field min-w-[120px] flex-[0_1_160px]" subscriptSizing="dynamic">
+    <mat-form-field
+      appearance="outline"
+      class="filter-field filter-field-select min-w-[120px] flex-[0_1_160px]"
+      subscriptSizing="dynamic"
+    >
       <mat-select formControlName="estado">
         <mat-option value="">Todos</mat-option>
         <mat-option value="activo">Activo</mat-option>
@@ -31,32 +35,32 @@
   <div class="mb-4 rounded-lg bg-danger-bg px-4 py-2.5 text-[13px] text-danger">{{ errorMensaje() }}</div>
 }
 
-<div class="overflow-x-auto rounded-xl border border-line bg-white">
+<div class="overflow-x-auto rounded-xl border border-solid border-line bg-white">
   <table mat-table [dataSource]="empleados()" class="w-full bg-transparent">
     <ng-container matColumnDef="rut">
       <th mat-header-cell *matHeaderCellDef>RUT</th>
-      <td mat-cell *matCellDef="let empleado" class="overflow-hidden text-ellipsis whitespace-nowrap font-mono text-[12px] text-[oklch(0.35_0.01_250)]">
-        {{ empleado.rut }}
+      <td mat-cell *matCellDef="let empleado" class="overflow-hidden text-ellipsis whitespace-nowrap">
+        {{ empleado.rut | rutFormat }}
       </td>
     </ng-container>
 
     <ng-container matColumnDef="nombres">
       <th mat-header-cell *matHeaderCellDef>Nombres</th>
-      <td mat-cell *matCellDef="let empleado" class="max-w-0 overflow-hidden text-ellipsis whitespace-nowrap">
+      <td mat-cell *matCellDef="let empleado" class="overflow-hidden text-ellipsis whitespace-nowrap">
         {{ empleado.nombres }}
       </td>
     </ng-container>
 
     <ng-container matColumnDef="apellidos">
       <th mat-header-cell *matHeaderCellDef>Apellidos</th>
-      <td mat-cell *matCellDef="let empleado" class="max-w-0 overflow-hidden text-ellipsis whitespace-nowrap">
+      <td mat-cell *matCellDef="let empleado" class="overflow-hidden text-ellipsis whitespace-nowrap">
         {{ empleado.apellidos }}
       </td>
     </ng-container>
 
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef>Email</th>
-      <td mat-cell *matCellDef="let empleado" class="max-w-0 overflow-hidden text-ellipsis whitespace-nowrap">
+      <td mat-cell *matCellDef="let empleado" class="overflow-hidden text-ellipsis whitespace-nowrap">
         {{ empleado.email }}
       </td>
     </ng-container>
@@ -65,7 +69,7 @@
       <th mat-header-cell *matHeaderCellDef>Estado</th>
       <td mat-cell *matCellDef="let empleado">
         <span
-          class="inline-flex items-center gap-1 whitespace-nowrap rounded-[14px] px-[9px] py-[3px] text-[11px] font-medium"
+          class="badge-estado"
           [class.bg-success-bg]="empleado.estado === 'activo'"
           [class.text-success-text]="empleado.estado === 'activo'"
           [class.bg-line]="empleado.estado !== 'activo'"
@@ -76,10 +80,27 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="arrow">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let empleado" class="text-right">
-        <span class="material-symbols-outlined text-[18px] text-[oklch(0.6_0.01_250)]">chevron_right</span>
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef class="w-28 mat-header-cell-right">Acciones</th>
+      <td mat-cell *matCellDef="let empleado" class="w-28">
+        <div class="flex items-center justify-end gap-1">
+          <button
+            mat-icon-button
+            type="button"
+            class="action-button action-button-edit"
+            (click)="onEditarEmpleado(empleado); $event.stopPropagation()"
+          >
+            <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            type="button"
+            class="action-button action-button-delete"
+            (click)="onEliminarEmpleado(empleado); $event.stopPropagation()"
+          >
+            <mat-icon fontSet="material-symbols-outlined">delete</mat-icon>
+          </button>
+        </div>
       </td>
     </ng-container>
 
