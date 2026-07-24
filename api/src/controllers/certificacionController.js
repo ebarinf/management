@@ -1,11 +1,12 @@
-const { Op } = require("sequelize");
+const { Op, ValidationError } = require("sequelize");
 const { Certificacion } = require("../models");
 
-// El listado y el detalle necesitan mostrar el nombre del empleado/
+// El listado y el detalle necesitan mostrar el nombre del empleado/nave/
 // departamento, no solo el id — se traen vía include en vez de que el
 // frontend tenga que resolverlos aparte.
 const includeAsociaciones = [
   { association: "empleado", attributes: ["id", "nombres", "apellidos"] },
+  { association: "nave", attributes: ["id", "nombre", "numeroMatricula"] },
   { association: "departamento", attributes: ["id", "nombre"] },
 ];
 
@@ -60,6 +61,7 @@ async function create(req, res) {
   try {
     const {
       empleadoId,
+      naveId,
       departamentoId,
       tipo,
       numero,
@@ -68,15 +70,15 @@ async function create(req, res) {
       estado,
     } = req.body;
 
-    if (!empleadoId || !departamentoId || !tipo || !fechaEmision) {
+    if (!departamentoId || !tipo || !fechaEmision) {
       return res.status(400).json({
-        message:
-          "Empleado, departamento, tipo y fecha de emisión son obligatorios",
+        message: "Departamento, tipo y fecha de emisión son obligatorios",
       });
     }
 
     const certificacion = await Certificacion.create({
       empleadoId,
+      naveId,
       departamentoId,
       tipo,
       numero,
@@ -86,6 +88,10 @@ async function create(req, res) {
     });
     res.status(201).json(certificacion);
   } catch (error) {
+    if (error instanceof ValidationError) {
+      return res.status(400).json({ message: error.errors[0].message });
+    }
+
     console.error(error);
     res.status(500).json({ message: "Error al crear el certificacion" });
   }
@@ -103,6 +109,7 @@ async function update(req, res) {
 
     const {
       empleadoId,
+      naveId,
       departamentoId,
       tipo,
       numero,
@@ -112,6 +119,7 @@ async function update(req, res) {
     } = req.body;
     const camposPermitidos = {
       empleadoId,
+      naveId,
       departamentoId,
       tipo,
       numero,
@@ -128,6 +136,10 @@ async function update(req, res) {
     await certificacion.update(camposPermitidos);
     res.json(certificacion);
   } catch (error) {
+    if (error instanceof ValidationError) {
+      return res.status(400).json({ message: error.errors[0].message });
+    }
+
     console.error(error);
     res.status(500).json({ message: "Error al actualizar la certificación" });
   }

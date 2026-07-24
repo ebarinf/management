@@ -3,20 +3,26 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("certificaciones", {
+    await queryInterface.createTable("naves", {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      empleado_id: {
-        type: Sequelize.INTEGER,
+      nombre: {
+        type: Sequelize.STRING,
         allowNull: false,
-        references: {
-          model: "empleados",
-          key: "id",
-        },
-        onDelete: "NO ACTION",
+      },
+      numero_matricula: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      tipo: {
+        type: Sequelize.STRING,
+      },
+      eslora: {
+        type: Sequelize.FLOAT,
       },
       departamento_id: {
         type: Sequelize.INTEGER,
@@ -27,24 +33,10 @@ module.exports = {
         },
         onDelete: "NO ACTION",
       },
-      tipo: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      numero: {
-        type: Sequelize.STRING,
-      },
-      fecha_emision: {
-        type: Sequelize.DATEONLY,
-        allowNull: false,
-      },
-      fecha_vencimiento: {
-        type: Sequelize.DATEONLY,
-      },
       estado: {
         type: Sequelize.STRING,
         allowNull: false,
-        defaultValue: "vigente",
+        defaultValue: "activa",
       },
       created_at: {
         type: Sequelize.DATE,
@@ -57,7 +49,7 @@ module.exports = {
     });
   },
 
-  async down(queryInterface) {
-    await queryInterface.dropTable("certificaciones");
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable("naves");
   },
 };

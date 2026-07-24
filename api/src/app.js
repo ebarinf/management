@@ -4,6 +4,7 @@ const { sequelize } = require("./models");
 const empleadoRoutes = require("./routes/empleadoRoutes");
 const departamentoRoutes = require("./routes/departamentoRoutes");
 const certificacionRoutes = require("./routes/certificacionRoutes");
+const naveRoutes = require("./routes/naveRoutes");
 const authRoutes = require("./routes/authRoutes");
 
 const app = express();
@@ -19,6 +20,7 @@ app.get("/api/health", (req, res) => {
 app.use("/api/empleados", empleadoRoutes);
 app.use("/api/departamentos", departamentoRoutes);
 app.use("/api/certificaciones", certificacionRoutes);
+app.use("/api/naves", naveRoutes);
 app.use("/api/auth", authRoutes);
 
 app.listen(PORT, () => {

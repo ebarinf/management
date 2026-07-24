@@ -1,0 +1,89 @@
+:host {
+  display: block;
+}
+
+::ng-deep {
+  // Material usa table-layout: auto por defecto, que reparte el ancho
+  // sobrante entre columnas según su contenido, no en partes iguales. Con
+  // layout fijo, las columnas sin ancho explícito (todas menos "acciones",
+  // que define su propio w-28) se reparten el espacio restante en partes
+  // iguales.
+  .mat-mdc-table {
+    table-layout: fixed;
+  }
+
+  .mat-mdc-header-cell {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 500;
+    color: oklch(0.5 0.01 250);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    border-bottom: 1px solid oklch(0.92 0.005 250);
+
+    // La columna "Acciones" alinea sus íconos a la derecha (justify-end
+    // en la celda) — el título del header debe alinearse igual, si no
+    // quedan descalzados entre sí.
+    &.mat-header-cell-right {
+      text-align: right;
+    }
+  }
+
+  .mat-mdc-cell {
+    font-size: 13px;
+    color: oklch(0.2 0.01 250);
+    border-bottom: 1px solid oklch(0.94 0.003 250);
+  }
+
+  // Sin cursor: pointer acá — igual que Certificaciones, esta fila no
+  // tiene routerLink a ninguna vista de detalle.
+  .mat-mdc-row:hover {
+    background: oklch(0.97 0.005 250);
+  }
+
+  .mdc-notched-outline__notch {
+    border-right: none;
+  }
+}
+
+mat-icon[matPrefix] {
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+  color: oklch(0.55 0.01 250);
+  margin-right: 4px;
+}
+
+// Botones de editar/eliminar en la columna "Acciones": mat-icon-button
+// expone su tamaño/color de ícono vía custom properties (--mat-icon-button-*),
+// así que basta con pisarlas acá — no hace falta ::ng-deep porque el
+// <button> lo escribe este mismo template, no vive dentro de otro
+// componente.
+.action-button {
+  --mat-icon-button-state-layer-size: 32px;
+  --mat-icon-button-icon-size: 18px;
+  --mat-icon-button-icon-color: #8b8f99;
+  border-radius: 50%;
+
+  .mat-icon {
+    // mat-icon trae un box fijo de 24x24px por defecto, sin relación con
+    // --mat-icon-button-icon-size (esa variable solo cambia el font-size
+    // del glifo) — hay que igualar el box al tamaño real para que el
+    // padding que calcula mat-icon-button lo centre bien en las 4
+    // direcciones.
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+    line-height: 18px;
+  }
+}
+
+.action-button-edit:hover {
+  background-color: #f0f0f2;
+  --mat-icon-button-icon-color: oklch(0.2 0.01 250);
+}
+
+.action-button-delete:hover {
+  background-color: #fbe9e7;
+  --mat-icon-button-icon-color: #b3261e;
+}

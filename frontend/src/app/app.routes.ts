@@ -4,6 +4,7 @@ import { Dashboard } from './features/dashboard/dashboard';
 import { Listado } from './features/empleados/listado/listado';
 import { DepartamentosListado } from './features/departamentos/listado/listado';
 import { CertificacionesListado } from './features/certificaciones/listado/listado';
+import { NavesListado } from './features/naves/listado/listado';
 import { Shell } from './layout/shell/shell';
 
 export const routes: Routes = [
@@ -24,6 +25,7 @@ export const routes: Routes = [
         component: CertificacionesListado,
         data: { title: 'Certificaciones' },
       },
+      { path: 'naves', component: NavesListado, data: { title: 'Naves' } },
     ],
   },
 ];
